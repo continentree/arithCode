@@ -1,4 +1,5 @@
 #include "lib.h"
+#include "artCode.h"
 
 int main(int argc, char[100] argv)
 {
