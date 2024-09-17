@@ -1,12 +1,14 @@
-#include "lib.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include "interval.h"
 #include "artCode.h"
 
-int main(int argc, char[100] argv)
+int main(int argc, char** argv)
 {
     if(argc != 1){
         exit(EXIT_SUCCESS);
     }
     else{
-        exit(EXIT_ERROR);
+        exit(EXIT_FAILURE);
     }
 }

@@ -1,21 +1,11 @@
-SOURCES=
-SOURCES+=fichier.c
-SOURCES+=prog.c
+prog : src/internal/main.o src/internal/lib.o src/internal/artCode.o
+	gcc -o prog src/internal/main.o src/internal/lib.o src/internal/artCode.o
 
-OBJECTS+=$(patsubst %.c,build/%.o,$(SOURCES))
-programme: $(OBJECTS) src/external/gmp-6.3.0/.libs/libgmp.a
-    $(CC) $^ $(LDFLAGS) -I src/external/gmp-6.3.0/.libs -o programme
+src/internal/main.o : src/internal/main.c
+	gcc -o src/internal/main.o -c src/internal/main.c -W -Wall -Wextra -Wvla -O0 -fsanitize=address,undefined
 
-build:
-    @mkdir -p build/external/C-Thread-Pool
-build/%.o: src/%.c Makefile build
-    $(CC) $(CFLAGS) -MMD -MP -c $< -o $@
+src/internal/lib.o : src/internal/lib.c
+	gcc -o src/internal/lib.o -c src/internal/lib.c -W -Wall -Wextra -Wvla -O0 -fsanitize=address,undefined
 
-src/external/gmp-6.3.0/.libs/libgmp.a:
-    cd src/external && \
-    rm -rf gmp-6.3.0 && \
-    tar -xvf gmp-6.3.0.tar.xz
-    cd src/external/gmp-6.3.0/ && \
-    export CFLAGS="-O3 -march=native -mtune=native" && \
-    ./configure --enable-static=yes --enable-shared=no --disable-cxx && \
-    make
+src/internal/artCode.o : src/internal/artCode.c
+	gcc -o src/internal/artCode.o -c src/internal/artCode.c -W -Wall -Wextra -Wvla -O0 -fsanitize=address,undefined
