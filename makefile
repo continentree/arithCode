@@ -1,11 +1,20 @@
-prog : src/internal/main.o src/internal/lib.o src/internal/artCode.o
-	gcc -o prog src/internal/main.o src/internal/lib.o src/internal/artCode.o
+CC = gcc
+CFLAGS = -W -Wall -Wextra -Wvla -O0
+EXEC = prog
+SRC=$(shell find ./src/internal/ -name '*.c')
+OBJ=$(patsubst %.c, %.o, $(SRC))
 
-src/internal/main.o : src/internal/main.c
-	gcc -o src/internal/main.o -c src/internal/main.c -W -Wall -Wextra -Wvla -O0 -fsanitize=address,undefined
+all : $(EXEC)
 
-src/internal/lib.o : src/internal/lib.c
-	gcc -o src/internal/lib.o -c src/internal/lib.c -W -Wall -Wextra -Wvla -O0 -fsanitize=address,undefined
+$(EXEC) : $(OBJ)
+	$(CC) $^ -o $@
 
-src/internal/artCode.o : src/internal/artCode.c
-	gcc -o src/internal/artCode.o -c src/internal/artCode.c -W -Wall -Wextra -Wvla -O0 -fsanitize=address,undefined
+%.o : %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+clean :
+	rm -rf $(OBJ)
+
+mrproper : clean
+	rm -rf $(EXEC)
+
